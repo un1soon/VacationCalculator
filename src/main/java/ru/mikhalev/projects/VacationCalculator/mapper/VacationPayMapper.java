@@ -25,7 +25,7 @@ public class VacationPayMapper {
      * */
     public VacationPay toVacationPay(Double averageSalary, Double averageAmountDays, Integer amountHolidays, Integer vacationDays) {
         return VacationPay.builder().
-                amount(((averageSalary / averageAmountDays) * (vacationDays - amountHolidays))).
+                amount((double) Math.round((averageSalary / averageAmountDays) * (vacationDays - amountHolidays))).
                 build();
     }
 }
