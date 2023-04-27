@@ -6,7 +6,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.mikhalev.projects.VacationCalculator.dto.VacationInfo;
 import ru.mikhalev.projects.VacationCalculator.dto.VacationPay;
-import ru.mikhalev.projects.VacationCalculator.exception.IncorrectDataInRequest;
+import ru.mikhalev.projects.VacationCalculator.util.exception.IncorrectDataInRequest;
+import ru.mikhalev.projects.VacationCalculator.util.exception.IncorrectPathToTheFile;
 import ru.mikhalev.projects.VacationCalculator.mapper.VacationPayMapper;
 
 import java.io.*;
@@ -35,14 +36,19 @@ public class VacationCalculatorService {
     @Value("${average.amount.days}")
     private double averageAmountDays;
 
-    /** Список, содержаший даты праздников в 2023 году */
+    /** Массив, содержаший даты праздников в 2023 году */
     private List<LocalDate> holidaysDates = new ArrayList<>();
 
-    /** Метод, расчитывающий сумму отпускных сотрудника */
-    public VacationPay calculatePay(VacationInfo vacationInfo) throws IOException {
+    /** Метод, который рассчитывает сумму отпускных сотрудника */
+    public VacationPay calculatePay(VacationInfo vacationInfo) {
         if(holidaysDates.isEmpty()) {
-            holidaysDates = getHolidaysDates(filepathToHolidaysDate);
+            try {
+                holidaysDates = getHolidaysDates(filepathToHolidaysDate);
+            } catch (IOException ex) {
+                throw new IncorrectPathToTheFile();
+            }
         }
+        log.info("Даты праздников: " + holidaysDates.toString());
         List<LocalDate> vacationDays = getAllDates(vacationInfo.getVacationStartDate(), vacationInfo.getVacationEndDate());
         Integer amountHolidays = getAmountHolidayDaysInList(vacationDays, holidaysDates);
         return vacationPayMapper.toVacationPay(vacationInfo.getAverageSalary(), averageAmountDays, amountHolidays, vacationDays.size());
@@ -58,7 +64,7 @@ public class VacationCalculatorService {
                 }
             }
         }
-        log.info("Number of holidays on employee vacation dates: " + counterHolidaysInList);
+        log.info("Количество дней отпуска сотрудника: " + counterHolidaysInList);
         return counterHolidaysInList;
     }
 
@@ -71,7 +77,7 @@ public class VacationCalculatorService {
         if(allDates.isEmpty())
             throw new IncorrectDataInRequest();
 
-        log.info("Vacation dates of employee: " + startDate.datesUntil(endDate.plusDays(1))
+        log.info("Даты отпуска сотрудника: " + startDate.datesUntil(endDate.plusDays(1))
                 .toList());
         return allDates;
     }
@@ -83,7 +89,7 @@ public class VacationCalculatorService {
         while(scanner.hasNextLine()) {
             holidaysDates.add(LocalDate.parse(scanner.nextLine()));
         }
-        log.info("Holiday dates have been added in list");
+        log.info("Даты праздников успешно добавлены в массив");
 
         return holidaysDates;
     }
