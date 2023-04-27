@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.mikhalev.projects.VacationCalculator.dto.VacationInfo;
 import ru.mikhalev.projects.VacationCalculator.dto.VacationPay;
-import ru.mikhalev.projects.VacationCalculator.exception.IncorrectDataInRequest;
+import ru.mikhalev.projects.VacationCalculator.util.exception.IncorrectDataInRequest;
 import ru.mikhalev.projects.VacationCalculator.service.VacationCalculatorService;
 
 import java.io.IOException;
@@ -30,12 +30,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class VacationCalculatorController {
     private final VacationCalculatorService vacationCalculatorService;
-    /** Расчет отпускных на основе введенных сотрудником данных об отпуске */
+    /** Расчет отпускных на основе введенных данных об отпуске */
     @GetMapping()
+
     public VacationPay calculateVacationPay(@RequestBody @Valid VacationInfo vacationInfo, BindingResult bindingResult) throws IOException {
         validateRequest(bindingResult);
-        log.info(vacationCalculatorService.getAllDates(vacationInfo.getVacationStartDate(),
-                vacationInfo.getVacationEndDate().plusDays(1)).toString());
 
         return vacationCalculatorService.calculatePay(vacationInfo);
     }

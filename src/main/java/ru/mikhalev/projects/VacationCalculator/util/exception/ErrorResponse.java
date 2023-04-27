@@ -1,4 +1,4 @@
-package ru.mikhalev.projects.VacationCalculator.exception;
+package ru.mikhalev.projects.VacationCalculator.util.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 /**
  * @author Ivan Mikhalev
  *
- * Объект, отправляемый при ошибках в введенных данных об отпуске
+ * Объект, отправляемый при ошибках в программе
  *
  */
 @Data
