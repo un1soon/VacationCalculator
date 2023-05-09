@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 /**
  * @author Ivan Mikhalev
  *
@@ -17,6 +18,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 public class VacationPay {
-    /** Сумма отпускных, которая будет начислена сотруднику */
-    private Double amount;
+    /**
+     * Сумма отпускных, которая будет начислена сотруднику
+     */
+    private double amount;
 }

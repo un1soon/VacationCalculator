@@ -1,7 +1,6 @@
 package ru.mikhalev.projects.VacationCalculator.mapper;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.mikhalev.projects.VacationCalculator.dto.VacationPay;
 
@@ -14,7 +13,6 @@ import ru.mikhalev.projects.VacationCalculator.dto.VacationPay;
 
 @Component
 @RequiredArgsConstructor
-@Slf4j
 public class VacationPayMapper {
 
     /** Мэппинг в сумму отпусных
